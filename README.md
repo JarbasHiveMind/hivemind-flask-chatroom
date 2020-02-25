@@ -1,46 +1,26 @@
-# Mycroft WebUI
-A very simple WebUI for interacting with your Mycroft instance.
+# HiveMind - Flask Terminal
 
-## Configuration
-This project needs the following configuration:
+A very simple WebUI for interacting with your Mycroft instance securely trough the [HiveMind](https://github.com/OpenJarbas/HiveMind-core)
 
-### Environment variables
-- `MYCROFT_HOST`: Set to the IP address or hostname of your Mycroft instance. Please ensure port 8181 is ONLY accessible to this container.
-- `ADMIN_USERNAME`: The username for the authentication dialog
-- `ADMIN_PASSWORD`: The password for the authentication dialog
+Reference implementation on integration HiveMind with a flask app
 
-If you wish, you could instead provide your own .htpasswd file. See Files below.
+![](./webui.png)
 
-### Files
-No files are necessary, but this container exposes a /config directory which supports the following files:
-- `nginx.crt`: SSL certificate
-- `nginx.key`: SSL key
-- `.htpasswd`: [Authentication file](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/#creating-a-password-file)
+## Usage
 
-If nginx.crt and nginx.key exist, the container will automatically start using SSL.
+run ```/flask_terminal/__main__.py```
 
-If .htpasswd exists, it will be used instead of the ADMIN_USERNAME and ADMIN_PASSWORD environment variables.
+TODO: argparse, change ```/flask_terminal/__main__.py``` with your credentials
 
-## Get image
-This image is available on [Docker Hub](https://hub.docker.com/r/thelastproject/mycroft-webui).
 
-Alternatively, you can build it yourself from the sources in this git repository:
+## Security
 
-```bash
-docker build -t mycroft-webui .
-```
+Running the flask app securely is out of scope for this repo, you will 
+probably want to run it with SSL by using nginx or something similar
 
-## Run
+The connection to the HiveMind (mycroft) should also be secured in  [HiveMind-core](https://github.com/OpenJarbas/HiveMind-core)
 
-```bash
-docker run -d \
--e MYCROFT_HOST=127.0.0.1 \
--v /your/config/directory/location:/config \
--p 8080:8080 \
--p 8443:8443 \
--e ADMIN_USERNAME=admin \
--e ADMIN_PASSWORD=changeme \
---name mycroft-webui mycroft-webui
-```
 
-With the above configuration, the container will listen on port 8080 (HTTP) and, if you set up SSL, port 8443 (HTTPS). The username and password are visible in the command, but it is strongly recommended to change them.
+## Credits
+
+Forked from [TheLastProject/mycroft-WebUI](https://github.com/TheLastProject/mycroft-WebUI)
