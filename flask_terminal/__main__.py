@@ -1,25 +1,9 @@
-from flask_terminal import JarbasWebTerminal, MessageHandler, platform
-from jarbas_hive_mind import HiveMindConnection
-from jarbas_utils import create_daemon
+from flask_terminal import get_connection, MessageHandler
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 
 app = Flask(__name__)
 
 hivemind = None
-
-
-def get_connection(host="wss://127.0.0.1",
-                   port=5678, name="JarbasWebTerminal",
-                   key="dummy_key", crypto_key=None,
-                   useragent=platform):
-    con = HiveMindConnection(host, port)
-    con._autorun = False
-
-    terminal = JarbasWebTerminal(crypto_key=crypto_key,
-                                 headers=con.get_headers(name, key),
-                                 useragent=useragent)
-
-    return con.connect(terminal)
 
 
 @app.route('/')
@@ -53,7 +37,7 @@ if __name__ == "__main__":
                               hivemind_port,
                               key=hivemind_key,
                               crypto_key=hivemind_crypto_key)
-    create_daemon(hivemind.run)
+    hivemind.run_threaded()
 
     app.run(flask_host, flask_port)
 

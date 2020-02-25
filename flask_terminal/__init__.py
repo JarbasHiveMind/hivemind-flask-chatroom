@@ -1,5 +1,7 @@
 from twisted.internet import reactor
+from jarbas_hive_mind import HiveMindConnection
 from jarbas_hive_mind.slave.terminal import HiveMindTerminal
+from jarbas_utils import create_daemon
 from jarbas_utils.log import LOG
 from jarbas_utils.messagebus import Message
 
@@ -12,7 +14,8 @@ class MessageHandler:
 
     @staticmethod
     def append_message(incoming, message):
-        MessageHandler.messages.append({'incoming': incoming, 'message': message})
+        MessageHandler.messages.append({'incoming': incoming,
+                                        'message': message})
 
     @staticmethod
     def get_messages():
@@ -45,5 +48,22 @@ class JarbasWebTerminal(HiveMindTerminal):
             self.speak('I don\'t know how to answer that')
 
     def run(self):
-        reactor.run(False)
+        reactor.run()
 
+    def run_threaded(self):
+        create_daemon(reactor.run, args=(False,))
+
+
+def get_connection(host="wss://127.0.0.1",
+                   port=5678, name="JarbasWebTerminal",
+                   key="dummy_key", crypto_key=None,
+                   useragent=platform):
+    con = HiveMindConnection(host, port)
+    # internal flag, avoid starting twisted reactor
+    con._autorun = False
+
+    terminal = JarbasWebTerminal(crypto_key=crypto_key,
+                                 headers=con.get_headers(name, key),
+                                 useragent=useragent)
+
+    return con.connect(terminal)
