@@ -15,8 +15,6 @@ $ pip install HiveMind-chatroom
 ```
 ## Usage
 
-If host is not provided auto discovery will be used
-
 ```bash
 $ HiveMind-chatroom --help
 usage: HiveMind-chatroom [-h] [--access_key ACCESS_KEY] [--crypto_key CRYPTO_KEY] [--name NAME] [--host HOST] [--port PORT] [--flask-port FLASK_PORT] [--flask-host FLASK_HOST]
