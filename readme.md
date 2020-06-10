@@ -2,6 +2,10 @@
 
 Flask Room for [Mycroft HiveMind](https://github.com/JarbasSkills/skill-hivemind)
 
+A very simple WebUI for interacting with your Mycroft instance securely trough the [HiveMind](https://github.com/OpenJarbas/HiveMind-core)
+
+Reference implementation on integration HiveMind with a flask app
+
 ![](./chatroom.png)
 
 ## Install
