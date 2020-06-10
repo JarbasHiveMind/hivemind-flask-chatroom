@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mycroft HiveMind Chatroom</title>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+#messages {
+  flex: 1 auto;
+  overflow-y: auto;
+}
+#form {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+#form_message {
+  flex-grow: 1;
+}
+</style>
+</head>
+<body>
+
+<div id="container">
+
+
+  <h3>Mycroft HiveMind Chatroom: {{ room }}</p>
+
+  <div id="messages">
+    Loading messages...
+  </div>
+
+  <form id="form" action="/send_message/{{room}}" method="post">
+     <input id="form_username" type="text" name="username"
+            value="Anonymous User" autofocus>
+    <input id="form_message" type="text" name="message" value="Hello World"
+           autofocus>
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+<script>
+
+window.mycroft_hivemind_chatroom_messages;
+
+function getMessages() {
+    xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText == window.mycroft_hivemind_chatroom_message) {
+                return;
+            };
+            window.mycroft_hivemind_chatroom_message = this.responseText;
+
+            let messages = "<ul>";
+            for (const message of JSON.parse(this.responseText)) {
+                messages = messages + "<li>" + message.username + ": " + message.message +  "</li>";
+            };
+            messages = messages + "</ul>";
+            messageElement = document.getElementById("messages");
+            messageElement.innerHTML = messages;
+            messageElement.scroll(0, messageElement.scrollHeight);
+        }
+    };
+    xmlhttp.open("GET", "messages/{{room}}", true);
+    xmlhttp.send(); 
+};
+
+setInterval(getMessages, 1000);
+getMessages();
+</script>
+
+</body>
+</html> 
