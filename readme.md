@@ -41,6 +41,7 @@ Default values are
 --access_key - "RESISTENCEisFUTILE"
 --crypto_key - "resistanceISfutile"
 --name - "JarbasChatRoomTerminal"
+--host - "wss://127.0.0.1"
 --port - 5678
 --flask-port - 8081
 
