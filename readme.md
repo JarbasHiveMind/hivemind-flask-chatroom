@@ -1,4 +1,4 @@
-# HiveMind - Mycroft Chat Room
+# HiveMind - Flask Template (Mycroft Chat Room)
 
 ![logo](./flask.png)
 
