@@ -1,5 +1,7 @@
 # HiveMind - Mycroft Chat Room
 
+![logo](./flask.png)
+
 Flask Room for [Mycroft HiveMind](https://github.com/JarbasSkills/skill-hivemind)
 
 A very simple WebUI for interacting with your Mycroft instance securely trough the [HiveMind](https://github.com/OpenJarbas/HiveMind-core)
