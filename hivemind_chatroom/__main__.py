@@ -1,16 +1,16 @@
-from hivemind_bus_client import HiveMessageBusClient
+import json
+
+from flask import Flask, render_template, request, redirect, url_for, \
+    jsonify
 from ovos_bus_client.message import Message
 from ovos_utils.fakebus import FakeBus
-from flask import Flask, render_template, request, redirect, url_for, \
-    jsonify, Response
-
+from pprint import pformat
+from hivemind_bus_client import HiveMessageBusClient
 
 platform = "JarbasFlaskChatRoomV0.2"
 bot_name = "HiveMind"
 
 app = Flask(__name__)
-
-
 
 
 class MessageHandler:
@@ -23,12 +23,32 @@ class MessageHandler:
                                             internal_bus=FakeBus())
         cls.hivemind.connect(site_id="flask")
         cls.hivemind.on_mycroft("speak", cls.handle_speak)
+        cls.hivemind.on_mycroft("ovos.common_play.play", cls.handle_ocp_play)
+        cls.hivemind.on_mycroft('mycroft.audio.service.play', cls.handle_legacy_play)
+
+    @classmethod
+    def handle_legacy_play(cls, message: Message):
+        tracks = message.data["tracks"]
+        room = message.context["room"]
+        # TODO - implement playback in browser if desired
+        cls.append_message(True, "\n".join([str(t) for t in tracks]),
+                           bot_name, room)
+
+    @classmethod
+    def handle_ocp_play(cls, message: Message):
+        track = message.data["media"]
+        room = message.context["room"]
+        # TODO - implement playback and nice UI card in browser if desired
+        msg = f"{track['artist']} - {track['title']}"
+        cls.append_message(True, msg, bot_name, room)
+        cls.append_message(True, track['uri'], bot_name, room)
 
     @classmethod
     def handle_speak(cls, message: Message):
         room = message.context["room"]
         utterance = message.data["utterance"]
-        cls.append_message(True, utterance, bot_name, room)
+        user = message.context["user"]  # could have been handled in skill
+        cls.append_message(True, f"@{user} - {utterance}", bot_name, room)
 
     @classmethod
     def say(cls, utterance, username="Anon", room="general"):
@@ -91,7 +111,7 @@ def main():
     args = parser.parse_args()
 
     MessageHandler.connect()
-    app.run(args.flask_host, args.flask_port, debug=True)
+    app.run(args.host, args.port, debug=True)
 
 
 if __name__ == "__main__":

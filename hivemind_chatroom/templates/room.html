@@ -43,6 +43,15 @@
       font-size: 1.25em;
     }
 
+    #intro {
+      background-color: #f8f9fa;
+      padding: 15px;
+      text-align: center;
+      font-size: 0.9em;
+      color: #333;
+      border-bottom: 1px solid #ddd;
+    }
+
     #messages {
       flex: 1;
       overflow-y: auto;
@@ -107,19 +116,56 @@
 <div id="container">
   <h3>HiveMind Chatroom: {{ room }}</h3>
 
+  <div id="intro">
+    <p>
+      - Users can create a new chatroom at any point by changing the URL.<br>
+      - Any number of users can join a chatroom simultaneously.<br>
+      - HiveMind will respond to every single message in every chatroom.<br>
+      - Chat resets when server is restarted, message history isn't kept<br>
+      - This is a proof of concept/template, not a real app.
+    </p>
+  </div>
+
   <div id="messages">
     Loading messages...
   </div>
 
   <form id="form" action="/send_message/{{room}}" method="post">
-    <input id="form_username" type="text" name="username" value="Anonymous User" placeholder="Enter your username" autofocus>
-    <input id="form_message" type="text" name="message" value="Hello World" placeholder="Type a message..." autofocus>
+    <input id="form_username" type="text" name="username" placeholder="Enter your username" autofocus>
+    <input id="form_message" type="text" name="message" placeholder="Type a message..." autofocus>
     <input type="submit" value="Send">
   </form>
 </div>
 
 <script>
+// Save username in localStorage if not already saved
+if (localStorage.getItem("username")) {
+  document.getElementById("form_username").value = localStorage.getItem("username");
+}
+
+// Store username in localStorage when changed
+document.getElementById("form_username").addEventListener("input", function () {
+  localStorage.setItem("username", this.value);
+});
+
 window.mycroft_hivemind_chatroom_messages;
+
+function isURL(str) {
+    const pattern = /^(https?:\/\/)?([\w\d-]+\.)+[a-z]{2,}\/?.*$/;
+    return pattern.test(str);
+}
+
+function embedURL(url) {
+    const videoPattern = /(?:https?:\/\/)?(?:www\.)?(youtube\.com\/(?:[^\/\n\s]+\/.*|(?:v|e(?:mbed)?)\/[^\/\n\s]+))/i;
+    const imgPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp))$/i;
+
+    if (videoPattern.test(url)) {
+        return `<iframe width="560" height="315" src="${url}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    } else if (imgPattern.test(url)) {
+        return `<img src="${url}" alt="Embedded Image" style="width: 100px; height: 100px;"/>`;
+    }
+    return `<a href="${url}" target="_blank">${url}</a>`;
+}
 
 function getMessages() {
     xmlhttp = new XMLHttpRequest();
@@ -132,7 +178,15 @@ function getMessages() {
 
             let messages = "<ul>";
             for (const message of JSON.parse(this.responseText)) {
-                messages = messages + "<li><strong>" + message.username + ":</strong> " + message.message +  "</li>";
+                let messageContent = message.message;
+
+                // Check if message is a URL and embed it if true
+                if (isURL(message.message)) {
+                    messageContent = embedURL(message.message);
+                } else {
+                    messageContent = message.message;
+                }
+                messages = messages + `<li><strong>${message.username}:</strong> ${messageContent}</li>`;
             }
             messages = messages + "</ul>";
             const messageElement = document.getElementById("messages");
