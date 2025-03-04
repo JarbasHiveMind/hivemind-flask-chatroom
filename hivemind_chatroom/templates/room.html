@@ -1,205 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HiveMind Flask Chatroom</title>
-  <style>
-    /* Reset some basic styles for a clean slate */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    #container {
-      width: 100%;
-      max-width: 800px;
-      height: 90vh;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background-color: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h3 {
-      background-color: #007bff;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-      font-size: 1.25em;
-    }
-
-    #intro {
-      background-color: #f8f9fa;
-      padding: 15px;
-      text-align: center;
-      font-size: 0.9em;
-      color: #333;
-      border-bottom: 1px solid #ddd;
-    }
-
-    #messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-      background-color: #fafafa;
-      border-bottom: 1px solid #ddd;
-    }
-
-    #messages ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    #messages li {
-      padding: 8px 12px;
-      border-bottom: 1px solid #e2e2e2;
-    }
-
-    #messages li:nth-child(odd) {
-      background-color: #f9f9f9;
-    }
-
-    #messages li:last-child {
-      border-bottom: none;
-    }
-
-    #form {
-      display: flex;
-      padding: 10px;
-      border-top: 1px solid #ddd;
-      background-color: #fff;
-      align-items: center;
-    }
-
-    #form input[type="text"] {
-      padding: 10px;
-      font-size: 1em;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      margin-right: 10px;
-      flex-grow: 1;
-      max-width: 300px;
-    }
-
-    #form input[type="submit"] {
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-
-    #form input[type="submit"]:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HiveMind Chatroom</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        .chat-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #fff;
+            text-align: left;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+            width: 100%;
+        }
+        .input-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            gap: 10px;
+        }
+        .input-row input {
+            flex: 1;
+        }
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .header img {
+            width: 50px;
+            height: 50px;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-
-<div id="container">
-  <h3>HiveMind Chatroom: {{ room }}</h3>
-
-  <div id="intro">
-    <p>
-      - Users can create a new chatroom at any point by changing the URL.<br>
-      - Any number of users can join a chatroom simultaneously.<br>
-      - HiveMind will respond to every single message in every chatroom.<br>
-      - Chat resets when server is restarted, message history isn't kept<br>
-      - This is a proof of concept/template, not a real app.
-    </p>
-  </div>
-
-  <div id="messages">
-    Loading messages...
-  </div>
-
-  <form id="form" action="/send_message/{{room}}" method="post">
-    <input id="form_username" type="text" name="username" placeholder="Enter your username" autofocus>
-    <input id="form_message" type="text" name="message" placeholder="Type a message..." autofocus>
-    <input type="submit" value="Send">
-  </form>
-</div>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <h1>HiveMind Chatroom</h1>
+        </div>
+        <p>
+            - Any number of users can join the chatroom simultaneously.<br>
+            - HiveMind will respond to every message by every user<br>
+            - Chat resets when server is restarted, message history isn't kept.<br>
+            - This is a proof of concept/template, not a real app.
+        </p>
+        <div class="chat-box" id="chat-box"></div>
+        <form action="/send_message" method="POST">
+            <div class="input-group">
+                <div class="input-row">
+                    <div>
+                        <label for="lang"><strong>Language Code</strong></label>
+                        <input type="text" id="lang" name="lang" placeholder="{{lang}}">
+                    </div>
+                    <div>
+                        <label for="site_id"><strong>Site ID</strong></label>
+                        <input type="text" id="site_id" name="site_id" placeholder="{{site_id}}">
+                    </div>
+                    <div>
+                        <label for="username"><strong>Username</strong></label>
+                        <input type="text" id="username" name="username" placeholder="{{username}}">
+                    </div>
+                </div>
+            </div>
+            <div class="input-group" style="margin-top: 10px;">
+                <input type="text" id="message" name="message" placeholder="Type a message...">
+                <button type="submit">Send</button>
+            </div>
+        </form>
+    </div>
 
 <script>
-// Save username in localStorage if not already saved
-if (localStorage.getItem("username")) {
-  document.getElementById("form_username").value = localStorage.getItem("username");
-}
-
-// Store username in localStorage when changed
-document.getElementById("form_username").addEventListener("input", function () {
-  localStorage.setItem("username", this.value);
-});
-
-window.mycroft_hivemind_chatroom_messages;
-
-function isURL(str) {
-    const pattern = /^(https?:\/\/)?([\w\d-]+\.)+[a-z]{2,}\/?.*$/;
-    return pattern.test(str);
-}
-
-function embedURL(url) {
-    const videoPattern = /(?:https?:\/\/)?(?:www\.)?(youtube\.com\/(?:[^\/\n\s]+\/.*|(?:v|e(?:mbed)?)\/[^\/\n\s]+))/i;
-    const imgPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp))$/i;
-
-    if (videoPattern.test(url)) {
-        return `<iframe width="560" height="315" src="${url}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    } else if (imgPattern.test(url)) {
-        return `<img src="${url}" alt="Embedded Image" style="width: 100px; height: 100px;"/>`;
+    function isURL(str) {
+        const pattern = /^(https?:\/\/)?([\w\d-]+\.)+[a-z]{2,}\/?.*$/;
+        return pattern.test(str);
     }
-    return `<a href="${url}" target="_blank">${url}</a>`;
-}
 
-function getMessages() {
-    xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            if (this.responseText == window.mycroft_hivemind_chatroom_message) {
-                return;
-            }
-            window.mycroft_hivemind_chatroom_message = this.responseText;
+    function embedURL(url) {
+        const videoPattern = /(?:https?:\/\/)?(?:www\.)?(youtube\.com\/(?:[^\/\n\s]+\/.*|(?:v|e(?:mbed)?)\/[^\/\n\s]+))/i;
+        const imgPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|bmp))$/i;
 
-            let messages = "<ul>";
-            for (const message of JSON.parse(this.responseText)) {
-                let messageContent = message.message;
-
-                // Check if message is a URL and embed it if true
-                if (isURL(message.message)) {
-                    messageContent = embedURL(message.message);
-                } else {
-                    messageContent = message.message;
-                }
-                messages = messages + `<li><strong>${message.username}:</strong> ${messageContent}</li>`;
-            }
-            messages = messages + "</ul>";
-            const messageElement = document.getElementById("messages");
-            messageElement.innerHTML = messages;
-            messageElement.scrollTop = messageElement.scrollHeight; // Scroll to the bottom
+        if (videoPattern.test(url)) {
+            return `<iframe width="560" height="315" src="${url}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        } else if (imgPattern.test(url)) {
+            return `<img src="${url}" alt="Embedded Image" style="width: 100px; height: 100px;"/>`;
         }
-    };
-    xmlhttp.open("GET", "messages/{{room}}", true);
-    xmlhttp.send();
-}
+        return `<a href="${url}" target="_blank">${url}</a>`;
+    }
 
-setInterval(getMessages, 1000);
-getMessages();
+    function getMessages() {
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.responseText == window.mycroft_hivemind_chatroom_message) {
+                    return;
+                }
+                window.mycroft_hivemind_chatroom_message = this.responseText;
+                let messages = "<ul>";
+                for (const message of JSON.parse(this.responseText)) {
+                    let emoji = message.username === 'HiveMind' ? '🤖' : '👤';
+                    let messageContent = isURL(message.message) ? embedURL(message.message) : message.message;
+                    messages += `<li>${emoji} <strong>${message.username}:</strong> ${messageContent}</li>`;
+                }
+                messages += "</ul>";
+                const messageElement = document.getElementById("chat-box");
+                messageElement.innerHTML = messages;
+                messageElement.scrollTop = messageElement.scrollHeight;
+            }
+        };
+        xmlhttp.open("GET", "/messages", true);
+        xmlhttp.send();
+    }
+
+    setInterval(getMessages, 1000);
+    getMessages();
 </script>
 
 </body>

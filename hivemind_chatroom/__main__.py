@@ -1,9 +1,13 @@
-import os
 import argparse
+import os
+import threading
+from collections import defaultdict
+from typing import Dict
 
 from flask import Flask, render_template, request, redirect, url_for, \
     jsonify
 from ovos_bus_client.message import Message
+from ovos_bus_client.session import Session, SessionManager
 from ovos_utils.fakebus import FakeBus
 from ovos_utils.log import init_service_logger, LOG
 from ovos_utils.xdg_utils import xdg_state_home
@@ -17,8 +21,10 @@ app = Flask(__name__)
 
 
 class MessageHandler:
-    messages = {}
+    messages = []
     hivemind: HiveMessageBusClient = None
+    sessions: Dict[str, Session] = defaultdict(Session)
+    _lock = threading.Lock()
 
     @classmethod
     def connect(cls):
@@ -32,75 +38,82 @@ class MessageHandler:
     @classmethod
     def handle_legacy_play(cls, message: Message):
         tracks = message.data["tracks"]
-        room = message.context["room"]
         # TODO - implement playback in browser if desired
         cls.append_message(True, "\n".join([str(t) for t in tracks]),
-                           bot_name, room)
+                           bot_name)
 
     @classmethod
     def handle_ocp_play(cls, message: Message):
         track = message.data["media"]
-        room = message.context["room"]
         # TODO - implement playback and nice UI card in browser if desired
         msg = f"{track['artist']} - {track['title']}"
-        cls.append_message(True, msg, bot_name, room)
-        cls.append_message(True, track['uri'], bot_name, room)
+        cls.append_message(True, msg, bot_name)
+        cls.append_message(True, track['uri'], bot_name)
 
     @classmethod
     def handle_speak(cls, message: Message):
-        room = message.context["room"]
         utterance = message.data["utterance"]
         user = message.context["user"]  # could have been handled in skill
-        cls.append_message(True, f"@{user} - {utterance}", bot_name, room)
+        cls.append_message(True, f"@{user} - {utterance}", bot_name)
+        # update any changes from ovos-core since we overwrite session per user on every utterance
+        cls.sessions[user] = SessionManager.get(message)
 
     @classmethod
-    def say(cls, utterance, username="Anon", room="general"):
-        MessageHandler.append_message(False, utterance, username, room)
+    def say(cls, utterance, username="Anon", lang="en", site_id="flask"):
+        cls.append_message(False, utterance, username)
         msg = Message("recognizer_loop:utterance",
-                      {"utterances": [utterance]},
+                      {"utterances": [utterance], "lang": lang},
                       {"source": platform,
-                       "room": room,
                        "user": username,
                        "destination": "skills",
                        "platform": platform}
                       )
-        cls.hivemind.emit_mycroft(msg)
+
+        # keep track of preferences per user
+        cls.sessions[username].lang = lang
+        cls.sessions[username].site_id = site_id
+        cls.sessions[username].session_id = username
+        msg.context["session"] = cls.sessions[username].serialize()
+        with cls._lock:
+            cls.hivemind.session_id = username  # TODO - tied to the base class, allow as kwarg in emit
+            cls.hivemind.emit_mycroft(msg)
+            cls.hivemind.session_id = "default"
 
     @classmethod
-    def append_message(cls, incoming, message, username, room):
-        if room not in MessageHandler.messages:
-            MessageHandler.messages[room] = []
-        MessageHandler.messages[room].append({'incoming': incoming,
-                                              'username': username,
-                                              'message': message})
-
-    @classmethod
-    def get_messages(cls, room):
-        return MessageHandler.messages.get(room, [])
+    def append_message(cls, incoming, message, username):
+         cls.messages.append({'incoming': incoming,
+                                        'username': username,
+                                        'message': message})
 
 
 @app.route('/', methods=['GET'])
 def general():
-    room = "general"
-    return redirect(url_for("chatroom", room=room))
+    return redirect(url_for("chatroom",
+                            site_id="flask", lang="en", username="anon_user"))
 
 
-@app.route('/<room>', methods=['GET'])
-def chatroom(room):
-    return render_template('room.html', room=room)
+@app.route('/chatroom/<username>/<site_id>/<lang>', methods=['GET'])
+def chatroom(username, site_id, lang):
+    return render_template('room.html',
+                           username=username, site_id=site_id, lang=lang)
 
 
-@app.route('/messages/<room>', methods=['GET'])
-def messages(room):
-    return jsonify(MessageHandler.get_messages(room))
+@app.route('/messages', methods=['GET'])
+def messages():
+    return jsonify(MessageHandler.messages)
 
 
-@app.route('/send_message/<room>', methods=['POST'])
-def send_message(room):
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    user = request.form['username'] or "anon_user"
+    lang = request.form['lang'] or "en"
+    site_id = request.form['site_id'] or "flask"
     MessageHandler.say(request.form['message'],
-                       request.form['username'],
-                       room)
-    return redirect(url_for("chatroom", room=room))
+                       user,
+                       lang,
+                       site_id)
+    return redirect(url_for("chatroom", site_id=site_id,
+                            lang=lang, username=user))
 
 
 def main():
@@ -130,7 +143,7 @@ def main():
         LOG.info(f"log files can be found at: {LOG.base_path}/flask-chat.log")
 
     MessageHandler.connect()
-    app.run(args.host, args.port, debug=True)
+    app.run(args.host, args.port, debug=False)
 
 
 if __name__ == "__main__":
