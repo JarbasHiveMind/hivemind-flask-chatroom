@@ -1,16 +1,16 @@
 # Changelog
 
-## [0.1.0a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/0.1.0a1) (2025-02-16)
+## [0.1.1a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/0.1.1a1) (2026-06-05)
 
-[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/V0.0.2...0.1.0a1)
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/V0.1.0...0.1.1a1)
 
 **Merged pull requests:**
 
-- feat:log to path [\#1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/1) ([JarbasAl](https://github.com/JarbasAl))
+- docs: zero-to-hero README + usage guide [\#3](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/3) ([JarbasAl](https://github.com/JarbasAl))
 
-## [V0.0.2](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/V0.0.2) (2025-02-16)
+## [V0.1.0](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/V0.1.0) (2025-03-04)
 
-[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/0.0.2...V0.0.2)
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/0.1.0...V0.1.0)
 
 
 
