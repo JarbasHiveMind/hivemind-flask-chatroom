@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.0a1) (2026-06-25)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/0.1.1a1...1.0.0a1)
+
+**Breaking changes:**
+
+- feat!: modernize to pyproject packaging + bus-client 2.x + e2e tests [\#5](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/5) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.1.1a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/0.1.1a1) (2026-06-05)
 
 [Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/V0.1.0...0.1.1a1)
