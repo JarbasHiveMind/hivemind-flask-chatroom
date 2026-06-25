@@ -1,0 +1,18 @@
+name: End-to-End Tests
+
+on:
+  pull_request:
+    branches: [dev, master]
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    uses: OpenVoiceOS/gh-automations/.github/workflows/build-tests.yml@dev
+    with:
+      python_versions: '["3.11"]'
+      # The e2e suite boots a real hivemind-core master in-process and a real
+      # HiveMessageBusClient over a localhost WebSocket (hivescope loopback);
+      # only the Flask HTTP/websocket browser surface is mocked. The `e2e` extra
+      # pulls the bus-client 2.x stack via pre-release floors (no --pre needed).
+      install_extras: 'e2e'
+      test_path: 'tests/e2e/'
