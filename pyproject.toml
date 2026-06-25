@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hivemind-flask-chatroom"
+description = "Multi-user Flask chatroom satellite for HiveMind"
+readme = "README.md"
+authors = [{ name = "jarbasAI", email = "jarbasai@mailfence.com" }]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dynamic = ["version"]
+dependencies = [
+    "flask",
+    # hivemind-bus-client 0.9.x is the bus-client 2.x line; pin the pre-release
+    # floor so the resolver picks the 2.x-compatible alpha WITHOUT --pre. The
+    # app's runtime imports (ovos_bus_client.message/session, ovos_utils) come
+    # in transitively but are floored explicitly so the graph resolves on the
+    # ovos-bus-client 2.x world.
+    "hivemind-bus-client>=0.9.2a1,<1.0.0",
+    "ovos-bus-client>=2.0.0a3,<3.0.0",
+    "ovos-utils>=0.11.1a1,<1.0.0",
+]
+
+[project.optional-dependencies]
+# End-to-end tests: a real hivemind-core master + this chatroom satellite over a
+# real HiveMessageBusClient, driven by the hivescope harness. The HiveMind 2.x
+# stack (core / agent-plugin / hivescope) requires ovos-bus-client>=2.0.0a3; the
+# chatroom runtime floors the same pre-releases, so the whole graph resolves on
+# the 2.x world. hivemind-core's transitive pre-release floors (json-database /
+# hivemind-sqlite-database / hivemind-json-db-plugin / ovos-utils /
+# ovos-workshop) are restated here so uv/pip pick them WITHOUT --pre (a
+# pre-release min-version pin is enough).
+e2e = [
+    "pytest",
+    "pytest-timeout",
+    "hivescope>=0.5.2a1",
+    "hivemind-core>=4.6.2a1",
+    "hivemind-ovos-agent-plugin>=0.3.1a1",
+    "hivemind-plugin-manager>=0.8.0a1",
+    "json-database>=0.10.2a1",
+    "hivemind-sqlite-database>=0.4.0a2",
+    "hivemind-json-db-plugin>=0.0.3a2",
+    "hivemind-websocket-protocol>=0.0.3",
+    "ovos-utils>=0.11.1a1",
+    "ovos-workshop>=8.0.0a1",
+]
+# Back-compat alias: the shared CI workflows historically install the `test`
+# extra; keep it pointing at the e2e set so unit + e2e both have their deps.
+test = ["hivemind-flask-chatroom[e2e]"]
+
+[project.urls]
+Homepage = "https://github.com/JarbasHiveMind/hivemind-flask-chatroom"
+
+[project.scripts]
+hivemind-flask-chatroom = "hivemind_chatroom.__main__:main"
+
+[tool.setuptools]
+packages = ["hivemind_chatroom"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+hivemind_chatroom = ["templates/*.html", "static/*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "hivemind_chatroom.version.__version__" }

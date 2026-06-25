@@ -33,7 +33,17 @@ a shared room where the credential lives on the server.
 pip install hivemind-flask-chatroom
 ```
 
-Dependencies: `flask`, `hivemind-bus-client`.
+Or from a checkout:
+
+```bash
+pip install .
+```
+
+Runtime dependencies: `flask`, `hivemind-bus-client` (the bus-client 2.x line),
+`ovos-bus-client`, `ovos-utils`. Packaging is driven entirely by
+[`pyproject.toml`](./pyproject.toml) — there is no `setup.py` or
+`requirements.txt`; the version is read from `hivemind_chatroom/version.py` by the
+shared OpenVoiceOS release workflows.
 
 ## Quickstart
 
@@ -108,10 +118,26 @@ The HiveMind link is end-to-end encrypted between the Flask process and the hub;
 the browser-to-Flask hop is plain HTTP, so front it with a TLS reverse proxy
 (nginx, Caddy) for any non-local deployment.
 
+## Running the tests
+
+```bash
+pip install -e ".[e2e]"   # unit + e2e deps (resolves the bus-client 2.x stack)
+pytest tests/             # everything
+pytest tests/test_smoke.py   # unit smoke tests only (no network)
+pytest tests/e2e/            # real-hub end-to-end suite
+```
+
+The end-to-end suite boots a real `hivemind-core` master in-process via the
+[hivescope](https://github.com/JarbasHiveMind/hivescope) harness and connects the
+real chatroom over a real `HiveMessageBusClient`; only the Flask browser surface
+is mocked. See [docs/development.md](./docs/development.md).
+
 ## See also
 
 - [docs/usage.md](./docs/usage.md) — identity provisioning, multi-user routing,
   and the message API in more detail.
+- [docs/development.md](./docs/development.md) — packaging, the test layout, and
+  how the e2e harness wires a real hub to the real chatroom.
 - [HiveMind-webchat](https://github.com/JarbasHiveMind/HiveMind-webchat) — the
   browser-side single-user equivalent.
 
