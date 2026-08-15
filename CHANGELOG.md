@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0a3](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.0a3) (2026-08-15)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.0a2...1.0.0a3)
+
+**Merged pull requests:**
+
+- docs: add AGENTS.md with per-repo agent conventions [\#9](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/9) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [1.0.0a2](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.0a2) (2026-08-10)
 
 [Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.0a1...1.0.0a2)
