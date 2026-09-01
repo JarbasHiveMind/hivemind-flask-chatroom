@@ -1,16 +1,48 @@
 # Changelog
 
-## [0.1.0a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/0.1.0a1) (2025-02-16)
+## [1.0.1a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.1a1) (2026-09-01)
 
-[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/V0.0.2...0.1.0a1)
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.0a3...1.0.1a1)
 
 **Merged pull requests:**
 
-- feat:log to path [\#1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/1) ([JarbasAl](https://github.com/JarbasAl))
+- fix\(deps\): raise floor pins to the proven-working HiveMind stack [\#11](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/11) ([JarbasAl](https://github.com/JarbasAl))
 
-## [V0.0.2](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/V0.0.2) (2025-02-16)
+## [1.0.0a3](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.0a3) (2026-08-15)
 
-[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/0.0.2...V0.0.2)
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.0a2...1.0.0a3)
+
+**Merged pull requests:**
+
+- docs: add AGENTS.md with per-repo agent conventions [\#9](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/9) ([JarbasAl](https://github.com/JarbasAl))
+
+## [1.0.0a2](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.0a2) (2026-08-10)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.0a1...1.0.0a2)
+
+**Merged pull requests:**
+
+- chore\(ci\): onboard Renovate [\#7](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/7) ([JarbasAl](https://github.com/JarbasAl))
+
+## [1.0.0a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.0a1) (2026-06-25)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/0.1.1a1...1.0.0a1)
+
+**Breaking changes:**
+
+- feat!: modernize to pyproject packaging + bus-client 2.x + e2e tests [\#5](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/5) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.1.1a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/0.1.1a1) (2026-06-05)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/V0.1.0...0.1.1a1)
+
+**Merged pull requests:**
+
+- docs: zero-to-hero README + usage guide [\#3](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/3) ([JarbasAl](https://github.com/JarbasAl))
+
+## [V0.1.0](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/V0.1.0) (2025-03-04)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/0.1.0...V0.1.0)
 
 
 
