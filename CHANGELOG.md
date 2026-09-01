@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.1a1) (2026-09-01)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.0a3...1.0.1a1)
+
+**Merged pull requests:**
+
+- fix\(deps\): raise floor pins to the proven-working HiveMind stack [\#11](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/11) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [1.0.0a3](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.0a3) (2026-08-15)
 
 [Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.0a2...1.0.0a3)
