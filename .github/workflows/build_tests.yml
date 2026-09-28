@@ -11,9 +11,10 @@ jobs:
     with:
       python_versions: '["3.10", "3.11", "3.12", "3.13"]'
       # Build + clean-install verification across all supported Pythons, then
-      # run the unit smoke tests. Dep version policy lives in pyproject.toml; the
-      # bus-client 2.x stack and its pre-release floors resolve from the `e2e`
-      # extra without --pre. The full e2e suite runs in e2e_tests.yml (single
-      # Python, faster).
+      # run every test in tests/ except tests/e2e. Dep version policy lives in
+      # pyproject.toml; the bus-client 2.x stack and its pre-release floors
+      # resolve because build-tests.yml defaults uv_prerelease to `allow`, not
+      # because of the `e2e` extra. The full e2e suite runs in e2e_tests.yml
+      # (single Python, faster).
       install_extras: 'e2e'
-      test_path: 'tests/test_smoke.py'
+      test_path: 'tests/ --ignore=tests/e2e'
