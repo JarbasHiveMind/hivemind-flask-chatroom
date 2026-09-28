@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.2a1) (2026-09-28)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.1a2...1.0.2a1)
+
+**Merged pull requests:**
+
+- fix\(tests\): tests/ is not a package, so the suite imports the wheel [\#16](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/16) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.1a2](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.1a2) (2026-09-28)
 
 [Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.1a1...1.0.1a2)
