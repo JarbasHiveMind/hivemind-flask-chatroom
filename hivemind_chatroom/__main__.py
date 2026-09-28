@@ -27,10 +27,15 @@ class MessageHandler:
     _lock = threading.Lock()
 
     @classmethod
-    def connect(cls):
-        cls.hivemind = HiveMessageBusClient(useragent=platform,
-                                            internal_bus=FakeBus())
-        cls.hivemind.connect(site_id="flask")
+    def connect(cls, bus: HiveMessageBusClient = None, site_id: str = "flask"):
+        # A pre-built/already-connected bus may be injected (used by the e2e
+        # harness to wire in a real client with explicit credentials); the
+        # default path builds one from the HiveMind identity file and connects.
+        if bus is None:
+            bus = HiveMessageBusClient(useragent=platform,
+                                       internal_bus=FakeBus())
+            bus.connect(site_id=site_id)
+        cls.hivemind = bus
         cls.hivemind.on_mycroft("speak", cls.handle_speak)
         cls.hivemind.on_mycroft("ovos.common_play.play", cls.handle_ocp_play)
         cls.hivemind.on_mycroft('mycroft.audio.service.play', cls.handle_legacy_play)
