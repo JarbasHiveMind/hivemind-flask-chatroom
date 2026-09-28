@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1a2](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.1a2) (2026-09-28)
+
+[Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.1a1...1.0.1a2)
+
+**Merged pull requests:**
+
+- ci: build\_tests collects the whole tests/ directory [\#13](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/pull/13) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [1.0.1a1](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/tree/1.0.1a1) (2026-09-01)
 
 [Full Changelog](https://github.com/JarbasHiveMind/hivemind-flask-chatroom/compare/1.0.0a3...1.0.1a1)
